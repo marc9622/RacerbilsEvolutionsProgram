@@ -37,10 +37,10 @@ public static class NeuralNetwork {
      */
     public NeuralNetwork(NeuralNetwork neuralNetwork) {
         int[] layerSizes = new int[neuralNetwork.layers.length + 1];
-        for(int i = 0; i < neuralNetwork.layers.length; i++) {
-            layerSizes[i] = neuralNetwork.layers[i].nodes[0].weights.length;
+        layerSizes[0] = neuralNetwork.layers[0].nodes[0].weights.length;
+        for(int i = 1; i < layerSizes.length; i++) {
+            layerSizes[i] = neuralNetwork.layers[i - 1].nodes.length;
         }
-        layerSizes[layerSizes.length - 1] = neuralNetwork.layers[layerSizes.length - 2].nodes.length;
         layers = initializeLayers(layerSizes);
         for(int i = 0; i < neuralNetwork.layers.length; i++) {
             for(int j = 0; j < neuralNetwork.layers[i].nodes.length; j++) {
@@ -166,7 +166,7 @@ public static class NeuralNetwork {
      */
     private static class Layer {
 
-        public Node[] nodes; //The amount of nodes in the layer.
+        public Node[] nodes;
 
         public Layer(int nodeSize, int weightSize) {
             nodes = new Node[nodeSize];
