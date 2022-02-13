@@ -4,8 +4,6 @@ class CarSystem {
   
   int generation = 1;
 
-  final float varians = 2;
-
   final int generationSize = populationSize,
             parentAmount = 1;
   final Supplier<CarController> supplier = () -> supplyCar();
@@ -28,7 +26,6 @@ class CarSystem {
   }
 
   void advanceGeneration() {
-    println(CarControllerList.get(0).hjerne.genes);
     generation++;
     CarControllerList = GeneticAlgorithm.makeGenerationFromGeneration(CarControllerList, generationSize, 1, mutater, scorer, combiner);
   }
@@ -49,12 +46,11 @@ class CarSystem {
   }
 
   CarController mutateCar(CarController car) {
-    var newCar = new CarController(car.hjerne.genes);
-    newCar.hjerne.mutate();
-    return newCar;
+    car.hjerne.mutateValues(0.1f);
+    return car;
   }
 
   CarController combineCars(List<CarController> list) {
-    return new CarController(list.get(0).hjerne.genes);
+    return new CarController(list.get(0).hjerne);
   }
 }

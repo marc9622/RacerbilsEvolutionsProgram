@@ -5,12 +5,12 @@ class CarController {
       
   CarController() {
     bil = new Car();
-    hjerne = new NeuralNetwork();
+    hjerne = new NeuralNetwork(2.0, 3, 3, 2);
     sensorSystem = new SensorSystem();
   }
-  CarController(List<Float> genes) {
+  CarController(NeuralNetwork oldNN) {
     bil = new Car();
-    hjerne = new NeuralNetwork(genes);
+    hjerne = new NeuralNetwork(oldNN);
     sensorSystem = new SensorSystem();
   }
       
@@ -18,14 +18,14 @@ class CarController {
     bil.update();
     sensorSystem.updateSensorsignals(bil.pos, bil.vel);
     
-    PVector output = hjerne.getOutput(
-      int(sensorSystem.leftSensorSignal),
-      int(sensorSystem.frontSensorSignal),
-      int(sensorSystem.rightSensorSignal)
+    double[] output = hjerne.getOutput(
+      (double)int(sensorSystem.leftSensorSignal),
+      (double)int(sensorSystem.frontSensorSignal),
+      (double)int(sensorSystem.rightSensorSignal)
     );
     
-    bil.turnCar(output.x);
-    bil.changeVel(output.y);
+    bil.turnCar((float)output[0]);
+    bil.changeVel((float)output[1]);
   }
   
   void display(){
