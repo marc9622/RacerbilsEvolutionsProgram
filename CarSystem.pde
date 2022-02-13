@@ -1,4 +1,6 @@
 import java.util.stream.IntStream;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.stream.Collectors;
 
 class CarSystem {
   
@@ -20,9 +22,8 @@ class CarSystem {
   void updateAndDisplay() {
     CarControllerList.forEach(c -> c.update());
     CarControllerList.get(0).display(0);
-    CarControllerList.stream().limit(100).filter(c -> scoreCar(c) > 0).skip(1).forEach(c -> c.display());
-    //if(frameCount%10==0)
-      CarControllerList.sort((a, b) -> scoreCar(b) - scoreCar(a));
+    CarControllerList = CarControllerList.stream().map(c -> new SimpleEntry<CarController, Integer>(c, scoreCar(c))).sorted((a, b) -> b.getValue() - a.getValue()).map(e -> e.getKey()).collect(Collectors.toList());
+    CarControllerList.stream().limit(100).skip(1).forEach(c -> c.display());
   }
 
   void advanceGeneration() {
